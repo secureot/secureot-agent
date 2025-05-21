@@ -48,3 +48,4 @@ echo "   ./target/release/secureot-agent --dual"
 // Actualizacion de codigo 2025-05-18
 // Actualizacion de codigo 2025-06-07
 // Actualizacion de codigo 2025-06-02
+// Actualizacion de codigo 2025-05-21
