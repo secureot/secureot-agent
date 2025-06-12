@@ -36,16 +36,3 @@ pub fn display_config(config: &Config) {
     println!("  - Métricas activadas: {} en puerto {}", config.metrics_enabled, config.metrics_port);
     println!("  - Nivel de logs: {}", config.log_level);
 }
-// Actualizacion de codigo 2025-06-10
-// Actualizacion de codigo 2025-06-03
-// Actualizacion de codigo 2025-05-28
-// Actualizacion de codigo 2025-05-26
-// Actualizacion de codigo 2025-05-24
-// Actualizacion de codigo 2025-05-23
-// Actualizacion de codigo 2025-05-19
-// Actualizacion de codigo 2025-05-17
-// Actualizacion de codigo 2025-05-14
-// Actualizacion de codigo 2025-05-13
-// Actualizacion de codigo 2025-05-23
-// Actualizacion de codigo 2025-05-22
-// Actualizacion de codigo 2025-05-18
