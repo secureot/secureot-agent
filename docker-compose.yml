@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  secureot-agent:
+    build: .
+    container_name: secureot-agent
+    environment:
+      - RUST_LOG=info
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+    network_mode: "host"
+    command: ["--dual", "--interface", "eth0", "--host", "192.168.1.100", "--port", "443", "--ssl"]
