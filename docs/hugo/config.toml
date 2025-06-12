@@ -1,4 +1,0 @@
-[[menu.main]]
-  name = "Documentación del Agente"
-  url = "/docs/agent-config/"
-  weight = 1
