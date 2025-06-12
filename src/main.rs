@@ -1,42 +1,30 @@
-use clap::{Arg, Command};
-mod capture;
 mod transmit;
-mod receive;
 mod api;
-mod config;
 mod metrics;
 
-fn main() {
-    let matches = Command::new("SecureOT Insight Agent")
-        .version("1.0")
-        .author("SecureOT Developer")
-        .about("Captura y transmite tráfico OT")
-        .arg(Arg::new("send").long("send").help("Activar modo emisor"))
-        .arg(Arg::new("receive").long("receive").help("Activar modo receptor"))
-        .arg(Arg::new("dual").long("dual").help("Modo dual: transmisión y recepción simultánea"))
-        .arg(Arg::new("api").long("api").help("Activar API REST"))
-        .get_matches();
+use crate::transmit::start_transmission;
+use crate::api::start_server;
+use crate::metrics::init_metrics;
+use tokio::sync::mpsc;
+use std::sync::{Arc, Mutex};
 
-    if matches.get_flag("send") {
-        transmit::start_transmission();
-    }
-    if matches.get_flag("receive") {
-        receive::start_reception();
-    }
-    if matches.get_flag("dual") {
-        transmit::start_transmission();
-        receive::start_reception();
-    }
-    if matches.get_flag("api") {
-        api::start_server();
+#[tokio::main]
+async fn main() {
+    let filters = Arc::new(Mutex::new(vec!["tcp port 502".to_string(), "udp port 161".to_string()]));
+
+    let app_state = Arc::new(init_metrics());
+
+    let (_tx, mut rx) = mpsc::channel::<Vec<u8>>(100);
+
+    tokio::spawn(async move {
+        start_server(Arc::clone(&app_state), filters.clone()).await;
+    });
+
+    tokio::spawn(async move {
+        start_transmission("192.168.1.100", 443, &[0x45, 0x00, 0x32], true);
+    });
+
+    while let Some(packet) = rx.recv().await {
+        println!("📡 Paquete procesado: {:?}", packet);
     }
 }
-// Actualizacion de codigo 2025-06-11
-// Actualizacion de codigo 2025-06-09
-// Actualizacion de codigo 2025-05-31
-// Actualizacion de codigo 2025-05-21
-// Actualizacion de codigo 2025-06-08
-// Actualizacion de codigo 2025-05-29
-// Actualizacion de codigo 2025-05-28
-// Actualizacion de codigo 2025-05-26
-// Actualizacion de codigo 2025-05-15

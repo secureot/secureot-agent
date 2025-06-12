@@ -1,0 +1,46 @@
+# 🔹 Ignorar binarios compilados
+/target/
+secureot-agent
+
+# 🔹 Ignorar dependencias y archivos de compilación
+Cargo.lock
+Cargo.toml.bak
+
+# 🔹 Ignorar archivos generados por el entorno de desarrollo
+.idea/
+.vscode/
+*.swp
+
+# 🔹 Ignorar configuraciones de contenedor y entorno
+.env
+.env.local
+.env.production
+.env.test
+docker-compose.override.yml
+
+# 🔹 Ignorar logs y datos temporales
+*.log
+debug.log
+npm-debug.log
+*.tmp
+*.bak
+
+# 🔹 Ignorar archivos de pruebas y cobertura
+coverage/
+tests/results/
+*.profdata
+
+# 🔹 Ignorar claves y certificados sensibles
+ssl_cert.pem
+ssl_key.pem
+*.crt
+*.key
+
+# 🔹 Ignorar configuraciones de Prometheus/Grafana (si aplica)
+prometheus.yml
+grafana.db
+grafana/data/
+
+# 🔹 Ignorar configuración específica de Rust
+rustfmt.toml
+clippy.toml

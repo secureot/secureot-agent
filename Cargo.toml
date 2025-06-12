@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1", features = ["full"] }
-pnet = "0.31.0"
+pnet = { version = "0.31", features = ["std"] }
 native-tls = "0.2"
 axum = "0.6"
 serde = { version = "1.0", features = ["derive"] }
