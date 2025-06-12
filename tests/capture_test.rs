@@ -8,11 +8,3 @@ mod tests {
         assert!(!filters.is_empty(), "Los filtros BPF deben estar activos");
     }
 }
-// Actualizacion de codigo 2025-06-07
-// Actualizacion de codigo 2025-05-15
-// Actualizacion de codigo 2025-06-10
-// Actualizacion de codigo 2025-06-06
-// Actualizacion de codigo 2025-06-05
-// Actualizacion de codigo 2025-06-03
-// Actualizacion de codigo 2025-05-24
-// Actualizacion de codigo 2025-05-19
