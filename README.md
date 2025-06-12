@@ -11,6 +11,7 @@
 - 📡 **API REST** para monitoreo y gestión  
 - 🏗️ **Despliegue con Docker** para entornos escalables  
 - 📊 **Exportación de métricas a Prometheus** para análisis en Grafana  
+- 🔥 **Solución a Errores Comunes**
 
 ---
 
@@ -106,3 +107,43 @@ packets_captured 15023
 # TYPE packets_filtered counter
 packets_filtered 7289
 ```
+---
+
+## 🔥 **Solución a Errores Comunes**
+### 📌 **Error: OpenSSL no encontrado**
+📜 **Mensaje de error al compilar:**
+```
+cargo:warning=Could not find directory of OpenSSL installation, and this `-sys` crate cannot proceed without this knowledge.
+```
+
+📌 **Causa:**  
+Rust no encuentra **OpenSSL** en el sistema, lo que impide la compilación de dependencias que requieren cifrado.  
+
+📌 **Solución:**  
+Ejecuta los siguientes comandos para definir correctamente las variables de entorno y asegurarte de que OpenSSL esté instalado:  
+
+```bash
+export OPENSSL_DIR=/usr/lib/ssl
+export OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu
+export OPENSSL_INCLUDE_DIR=/usr/include/openssl
+```
+✅ **Esto le indica a Cargo dónde encontrar OpenSSL.**  
+
+Si el error persiste, instala las dependencias necesarias:
+```bash
+sudo apt update && sudo apt install -y pkg-config libssl-dev
+```
+
+📜 **Verifica que OpenSSL está correctamente instalado:**
+```bash
+openssl version
+```
+✅ **Debe mostrar una versión activa, como `OpenSSL 3.0.2 15 Mar 2022`.**  
+
+🔥 **Después de estos ajustes, recompila tu proyecto con:**
+```bash
+cargo clean
+cargo build --release
+```
+Esto asegurará que SecureOT Insight Agent se compile sin errores de OpenSSL. 🚀  
+
