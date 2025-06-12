@@ -39,14 +39,3 @@ chmod +x scripts/*.sh
 
 echo "✅ Instalación completada. Puedes ejecutar el agente con:"
 echo "   ./target/release/secureot-agent --dual"
-// Actualizacion de codigo 2025-06-08
-// Actualizacion de codigo 2025-06-02
-// Actualizacion de codigo 2025-05-30
-// Actualizacion de codigo 2025-05-25
-// Actualizacion de codigo 2025-05-22
-// Actualizacion de codigo 2025-05-20
-// Actualizacion de codigo 2025-05-18
-// Actualizacion de codigo 2025-06-07
-// Actualizacion de codigo 2025-06-02
-// Actualizacion de codigo 2025-05-21
-// Actualizacion de codigo 2025-05-13
