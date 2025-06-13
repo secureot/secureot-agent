@@ -109,7 +109,7 @@ packets_filtered 7289
 ```
 ---
 
-## 🔥 **Solución a Errores Comunes**
+## 🔹 **5️⃣ Solución a Errores Comunes**
 ### 📌 **Error: OpenSSL no encontrado**
 📜 **Mensaje de error al compilar:**
 ```
