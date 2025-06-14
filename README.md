@@ -127,6 +127,11 @@ export OPENSSL_DIR=/usr/lib/ssl
 export OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu
 export OPENSSL_INCLUDE_DIR=/usr/include/openssl
 ```
+En el caso de usar una Raspberry Pi
+```bash
+export OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu/
+```
+
 ✅ **Esto le indica a Cargo dónde encontrar OpenSSL.**  
 
 Si el error persiste, instala las dependencias necesarias:
