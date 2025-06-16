@@ -1,0 +1,9 @@
+[package]
+name = "sniffer_remote_pcap"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9" # Para leer el archivo de configuración YAML
+chrono = { version = "0.4", features = ["serde"] } # Para la gestión de fechas y rotación horaria
