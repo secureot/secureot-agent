@@ -1,0 +1,10 @@
+[package]
+name = "secureot_span_forwarder"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pcap = "0.9"
+chrono = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
