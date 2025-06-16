@@ -17,5 +17,5 @@ El agente puede operar en modo pasivo escuchando tráfico duplicado desde un pue
 | **FortiGate 60F / 30D**| CLI: `config system virtual-switch`, `edit lan`, `set span enable`, `set span-source-port`, `set span-dest-port`, `end`| Solo funciona en interfaces tipo hardware/software switch; no aplicable a interfaces físicas |
 
 
-## 📡 Sniffer remoto por puerto TCP
-El agente también puede actuar como receptor activo de tráfico, escuchando conexiones entrantes a través de un puerto configurable (por defecto 443). Esta modalidad permite recibir datos desde nodos remotos o arquitecturas de reenvío, integrándose como colector central en despliegues distribuidos o como nodo puente en capturas fuera de banda.
+## 📡 Sniffer remoto por puerto TCP/UDP
+El agente también puede actuar como receptor activo de tráfico, escuchando conexiones entrantes a través de un puerto configurable. Esta modalidad permite recibir datos desde nodos remotos o arquitecturas de reenvío, integrándose como colector central en despliegues distribuido. Además, implementa un sistema de rotación horaria de archivos PCAP y definición por IP de origen, permitiendo segmentar el tráfico recibido en archivos independientes para cada fuente. Compatible con LINKTYPE_RAW, puede registrar payloads sin encabezados Ethernet, facilitando integraciones en entornos OT que requieren flexibilidad y separación lógica del tráfico.
