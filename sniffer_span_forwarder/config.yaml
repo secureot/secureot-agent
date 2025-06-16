@@ -1,0 +1,18 @@
+capture:
+  interface: "eth0"
+  bpf_filter: null
+
+routing_rules:
+  - ip: "10.0.0.1"
+    output_prefix: "plc1"
+
+default_output_prefix: "default"
+
+output_directories:
+  pcap_raw_output_path: "./pcaps"
+
+forward:
+  enable: true
+  host: "192.168.1.100"
+  port: 443
+  protocol: "udp"
