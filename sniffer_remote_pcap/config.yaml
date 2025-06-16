@@ -1,0 +1,25 @@
+# Puerto en el que se recivira el tráfico remoto
+port: 5000
+
+# Protocolo a escuchar ("tcp" o "udp")
+protocol: "tcp"
+
+# Reglas
+
+routing_rules:
+  # Ejemplo 1: Tráfico de un "enviador" remoto específico (ej. un Raspberry Pi en otra sede)
+  - ip: "192.168.50.100"   # IP del dispositivo remoto que envía el tráfico
+    output_prefix: "remote_sender_site_a" # Los archivos PCAP para esta IP comenzarán con 'remote_sender_site_a'
+
+  # Ejemplo 2: Otro enviador remoto
+  - ip: "10.0.1.5"
+    output_prefix: "remote_data_aggregator"
+
+# Prefijo por defecto para los archivos PCAP de cualquier tráfico
+# que no coincida con ninguna de las 'routing_rules' anteriores.
+default_output_prefix: "remote_misc_traffic"
+
+# Configuración de los directorios de salida para los archivos PCAP
+output_directories:
+  pcap_raw_output_path: "/var/lib/secureot-agent/remote_pcap_raw"
+  
