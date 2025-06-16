@@ -1,0 +1,43 @@
+# Configuración principal de captura de tráfico
+capture:
+  # La interfaz de red en la que escuchará el tráfico.
+  # Por ejemplo, si tu puerto SPAN está conectado a 'eth0', usa 'eth0'.
+  # Puedes ver las interfaces disponibles con 'ip a' o 'ifconfig'.
+  interface: "eth0"
+
+  # Filtro BPF (Berkeley Packet Filter) opcional.
+  # Si se especifica, solo se capturará el tráfico que coincida con este filtro.
+  # Esto es muy útil para reducir la carga y capturar solo tráfico relevante.
+  # Si se deja vacío o se comenta, se capturará todo el tráfico de la interfaz.
+  # Ejemplos:
+  # - "tcp port 502 or tcp port 102" (para Modbus/TCP y S7Comm)
+  # - "host 192.168.1.10" (tráfico hacia/desde una IP específica)
+  # - "" (vacío, captura todo)
+  bpf_filter: "tcp port 502 or tcp port 102 or udp port 44818"
+
+# Reglas para el tráfico capturado a archivos PCAP específicos.
+# El tráfico se enviara a un archivo cuyo nombre comienza con el 'output_prefix' especificado.
+# La IP definida aquí será comparada con la IP de origen O de destino de cada paquete.
+routing_rules:
+  # Ejemplo 1: Tráfico del PLC principal
+  - ip: "192.168.1.10"       # La IP del PLC
+    output_prefix: "traffic_plc_main" # Los archivos PCAP para este PLC comenzarán con 'traffic_plc_main'
+
+  # Ejemplo 2: Tráfico de la HMI de desarrollo
+  - ip: "192.168.1.20"       # La IP de la HMI
+    output_prefix: "traffic_hmi_dev"  # Los archivos PCAP para esta HMI comenzarán con 'traffic_hmi_dev'
+
+  # Ejemplo 3: Tráfico del servidor SCADA
+  - ip: "10.0.0.5"          # La IP del servidor SCADA
+    output_prefix: "traffic_scada_server" # Los archivos PCAP para este servidor comenzarán con 'traffic_scada_server'
+
+# Prefijo por defecto para los archivos PCAP de cualquier tráfico
+# que no coincida con ninguna de las 'routing_rules' anteriores.
+default_output_prefix: "traffic_misc" # El tráfico no enrutado irá a archivos que comienzan con 'traffic_misc'
+
+# Configuración de los directorios de salida para los archivos PCAP
+# El programa no limpia estos archivos.
+output_directories:
+  # Directorio donde se crearan los archivos PCAP.
+  pcap_raw_output_path: "/var/lib/secureot-agent/pcap_raw"
+  
