@@ -1,4 +1,10 @@
-
+| Característica | `sniffer_remote_pcap` | `sniffer_span_forwarder` | `sniffer_span_pcap` |
+| :--- | :--- | :--- | :--- |
+| **Origen del Tráfico** | Remoto (desde la red) | Local (desde la interfaz) | Local (desde la interfaz) |
+| **Rol** | Receptor / Servidor | Agente de Captura y Reenvío | Agente de Captura |
+| **Capacidad de Reenvío** | No aplica (es el receptor) | ✅ Sí | ❌ No |
+| **Lógica de Enrutamiento** | Por IP de origen del paquete **remoto** | Por IP de origen/destino **del paquete capturado** | Por IP de origen/destino **del paquete capturado** |
+| **Filtros de Captura** | No tiene | ✅ Sí (filtro BPF) | ✅ Sí (filtro BPF) |
 
 ## 🔍 Sniffer pasivo por puerto SPAN
 El agente puede operar en modo pasivo escuchando tráfico duplicado desde un puerto SPAN (Switch Port Analyzer). Esta modalidad le permite capturar paquetes en tiempo real sin interferir en la red, ideal para monitoreo continuo, auditorías y detección de anomalías en entornos OT donde la intervención directa no es posible.
