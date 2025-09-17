@@ -31,7 +31,7 @@ utilizando herramientas de traza de sistema, kernel y red.
 
 ---
 
-## Syscalls y librerías con strace / ltrace
+## Syscalls y librerías con strace / ltrace / dtrace
 
 - strace: ver llamadas al sistema relacionadas con red y archivos.
 
@@ -41,9 +41,36 @@ utilizando herramientas de traza de sistema, kernel y red.
     # Lanzar el binario y tracearlo desde el inicio
     sudo strace -ff -tt -s 200 -e trace=network,file ./secureot-agent --config config.yaml 2>strace.log
 
-- ltrace: ver llamadas a librerías (ej. pcap_open_live, fwrite).
+### ltrace (Linux)
 
-    sudo ltrace -p <PID> -o ltrace.log
+`ltrace` permite observar las llamadas a librerías dinámicas (ej. glibc, libpcap).
+
+    # Ver todas las llamadas de biblioteca del proceso
+    sudo ltrace -p $(pgrep secureot-agent)
+
+    # Guardar en log
+    sudo ltrace -p $(pgrep secureot-agent) -o ltrace.log
+
+    # Mostrar solo funciones de libpcap
+    sudo ltrace -p $(pgrep secureot-agent) -e pcap_* -o ltrace_pcap.log
+
+    # Ver cada vez que abre archivos o escribe
+    sudo ltrace -p $(pgrep secureot-agent) -e fopen,fwrite,fclose
+
+### dtrace (BSD, Solaris, macOS, Linux con soporte)
+
+`dtrace` permite instrumentar syscalls y funciones de libc en tiempo real.
+
+    # Ver cada vez que el proceso llama sendto()
+    sudo dtrace -n 'syscall::sendto:entry /execname == "secureot-agent"/ { printf("%d bytes -> fd %d\n", arg2, arg0); }'
+
+    # Ver llamadas a open() hechas por el agente
+    sudo dtrace -n 'syscall::open*:entry /execname == "secureot-agent"/ { printf("open %s\n", copyinstr(arg0)); }'
+
+    # Medir latencia de sendto()
+    sudo dtrace -n 'syscall::sendto:entry /execname=="secureot-agent"/ { self->ts = timestamp; }
+                    syscall::sendto:return /self->ts/ { printf("sendto latency %dus\n", (timestamp - self->ts)/1000); self->ts=0; }'
+
 
 ---
 
