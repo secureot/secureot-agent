@@ -68,23 +68,6 @@ Scripts útiles de bcc-tools: tcpconnect, tcplife, trace.
 
 ---
 
-## Entorno de prueba controlado
-
-1. Iniciar un collector de prueba:
-
-    # Collector UDP
-    nc -klu 2055
-    # Collector TCP
-    nc -l 2055
-
-2. Ejecutar el agente apuntando al collector.  
-3. En paralelo, lanzar:
-
-    sudo tcpdump -i any host <collector_ip> -w /tmp/test.pcap
-    sudo strace -tt -e trace=network -p <PID> -o strace.net.log
-
----
-
 ## Depuración con gdb / rr
 
     # Usar gdb para depurar paso a paso
