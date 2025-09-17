@@ -23,3 +23,93 @@ Este agente permite capturar tráfico en crudo desde una interfaz de red (por ej
 
 ### 📡 Sniffer remoto con recepción por puerto TCP/UDP
 El agente también puede actuar como receptor activo de tráfico, escuchando conexiones entrantes a través de un puerto configurable. Esta modalidad permite recibir datos desde nodos remotos o arquitecturas de reenvío, integrándose como colector central en despliegues distribuido. Además, implementa un sistema de rotación horaria de archivos PCAP y definición por IP de origen, permitiendo segmentar el tráfico recibido en archivos independientes para cada fuente. Compatible con LINKTYPE_RAW, puede registrar payloads sin encabezados Ethernet, facilitando integraciones en entornos OT que requieren flexibilidad y separación lógica del tráfico.
+
+# Debug en tiempo real del SecureOT Agent
+
+Este documento describe cómo depurar y observar el funcionamiento del agente en tiempo real
+utilizando herramientas de traza de sistema, kernel y red.
+
+---
+
+## Syscalls y librerías con strace / ltrace
+
+- strace: ver llamadas al sistema relacionadas con red y archivos.
+
+    # Adjuntar a un PID existente
+    sudo strace -ff -tt -s 200 -e trace=network,file -p <PID> -o strace_agent.log
+
+    # Lanzar el binario y tracearlo desde el inicio
+    sudo strace -ff -tt -s 200 -e trace=network,file ./secureot-agent --config config.yaml 2>strace.log
+
+- ltrace: ver llamadas a librerías (ej. pcap_open_live, fwrite).
+
+    sudo ltrace -p <PID> -o ltrace.log
+
+---
+
+## Trazado a nivel kernel con eBPF (bpftrace / bcc)
+
+Ejemplo con bpftrace para ver llamadas sendto del proceso:
+
+    # Mostrar tamaño y fd de cada sendto de secureot-agent
+    sudo bpftrace -e 'tracepoint:syscalls:sys_enter_sendto /comm == "secureot-agent"/ { printf("pid=%d fd=%d size=%d\n", pid, args->fd, args->size); }'
+
+Scripts útiles de bcc-tools: tcpconnect, tcplife, trace.
+
+---
+
+## Ver sockets y procesos
+
+    # Listar sockets abiertos
+    sudo ss -pan | grep <PID>
+
+    # Ver descriptores de archivo de red
+    sudo lsof -p <PID> -nP | grep SOCK
+
+---
+
+## Entorno de prueba controlado
+
+1. Iniciar un collector de prueba:
+
+    # Collector UDP
+    nc -klu 2055
+    # Collector TCP
+    nc -l 2055
+
+2. Ejecutar el agente apuntando al collector.  
+3. En paralelo, lanzar:
+
+    sudo tcpdump -i any host <collector_ip> -w /tmp/test.pcap
+    sudo strace -tt -e trace=network -p <PID> -o strace.net.log
+
+---
+
+## Depuración con gdb / rr
+
+    # Usar gdb para depurar paso a paso
+    gdb ./secureot-agent
+
+    # Grabar y reproducir con rr
+    rr record ./secureot-agent --config config.yaml
+    rr replay
+
+---
+
+## Comandos de ejemplo combinados
+
+    # 1) Collector de prueba
+    nc -klu 9999 &
+
+    # 2) Lanzar agente
+    ./secureot-agent --config example.yaml &
+
+    # 3) Captura con tcpdump
+    sudo tcpdump -i any -w /tmp/flow.pcap host <collector_ip> &
+
+    # 4) Syscalls de red con strace
+    sudo strace -ff -tt -s 200 -e trace=network -p $(pgrep secureot-agent) -o /tmp/strace_net.log &
+
+    # 5) eBPF para sendto
+    sudo bpftrace -e 'kprobe:sys_sendto /pid == PID/ { printf("sendto pid=%d fd=%d size=%d\n", pid, ((int)PT_REGS_PARM1(ctx)), ((int)PT_REGS_PARM3(ctx))); }'
+
