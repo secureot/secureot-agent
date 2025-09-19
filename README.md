@@ -1,4 +1,32 @@
-### Tabla Comparativa
+# Agente educativo de monitoreo de tráfico
+
+El código presentado es a modo educativo para entender en forma simple como funciona una aplicación de monitoreo pasivo del tráfico de red.
+
+## Comparativa de aplicaciones presente en el mercado para monitoreo de redes industriales
+
+# Comparativa Unificada – Análisis de PCAP y Seguridad OT
+
+| Herramienta | Tipo / Enfoque | ¿PCAP offline? | Protocolos ICS | Topología / Inventario | Detección de amenazas | Gestión de vulnerabilidades | Integraciones | Curva de uso | Nivel de Madurez | Mejores casos |
+|-------------|----------------|----------------|----------------|------------------------|-----------------------|-----------------------------|---------------|--------------|------------------|---------------|
+| **Wireshark / Tshark** | Analizador de paquetes (manual/CLI) | ✅ | Alto (Modbus, S7Comm, DNP3, BACnet, IEC-104, etc.) | Parcial (endpoints/conversations) | ❌ | ❌ | Export CSV/PCAP | Baja | **Básico** | Triage inicial, análisis puntual de tramas |
+| **GrassMarlin** | Descubrimiento pasivo ICS | ✅ | ICS comunes | ✅ (mapa Purdue, segmentos) | ❌ | ❌ | Export inventario | Media | **Básico** | Mapeo topología OT desde PCAP |
+| **Zeek** | Framework análisis de tráfico | ✅ | Via packages ICS | Parcial (inventario en conn.log) | ❌ (nativo) | ❌ | SIEM, CSV, JSON | Media-Alta | **Intermedio** | Normalización masiva de PCAP, hunting |
+| **Suricata** | IDS/IPS basado en firmas | ✅ | Depende ruleset (ET ICS) | ❌ | ✅ (rules) | ❌ | SIEM (EVE JSON) | Media | **Intermedio** | Detección IOC y anomalías de protocolos OT |
+| **Arkime (Moloch)** | Indexación masiva de PCAP | ✅ | Neutro | ❌ | ❌ | ❌ (integra con Zeek) | UI web, SIEM | Media | **Intermedio** | Revisión histórica, búsqueda masiva de sesiones |
+| **Malcolm** | Suite lista (Zeek + Arkime + Dashboards) | ✅ | Via Zeek | Parcial (dashboards) | Parcial (con Suricata) | ❌ | OpenSearch, Arkime UI | Media | **Intermedio** | Plataforma open-source todo en uno para equipos |
+| **Claroty CTD** | NDR OT comercial | ✅ | Muy amplio ICS | ✅ Completo | ✅ Avanzada + ML | ✅ (con CVM) | SIEM, SOAR, ticketing | Media | **Enterprise** | Visibilidad y detección integral OT |
+| **Nozomi Guardian** | NDR OT/IoT | ✅ | Muy amplio ICS | ✅ Completo | ✅ Análisis avanzado | Parcial (con partners) | SIEM, SOAR, firewalls | Media | **Enterprise** | Grandes despliegues OT críticos |
+| **Tenable.ot** | OT Security + vulnerabilidades | ✅ | Amplio ICS | ✅ Inventario detallado | ✅ | ✅ fuerte | Tenable.io, SIEM | Media | **Enterprise** | Foco en compliance + VM OT |
+| **Defender for IoT (MS)** | OT/IoT integrado Azure | ✅ | ICS + IoT | ✅ | ✅ (IoC + ML) | ✅ (integraciones) | Sentinel, XDR | Baja-Media | **Enterprise** | Organizaciones en ecosistema Microsoft |
+| **Dragos Platform** | Threat Intel + detección OT | ✅ | Amplio ICS | ✅ | ✅ Avanzada + TI Dragos | Parcial | SIEM, SOAR | Media-Alta | **Enterprise** | Infraestructura crítica, energía |
+| **Forescout (SilentDefense)** | OT/IoT/TI convergente | ✅ | ICS + IoT | ✅ Híbrido | ✅ | ✅ | NAC, SIEM, SOAR | Media | **Enterprise** | Organizaciones OT/IoT/TI mixtas |
+| **SCADAfence Platform** | Visibilidad y detección OT | ✅ | ICS estándar | ✅ | ✅ Anomalías | Parcial | SIEM, SOAR | Media | **Enterprise** | Manufactura discreta/continua |
+| **Armis Centrix (OT module)** | Seguridad OT/IoT unificada | ✅ | ICS + IoT | ✅ Unificado | ✅ | ✅ Riesgos + exposiciones | SIEM, SOAR | Baja-Media | **Enterprise** | Convergencia OT/IoT/IT empresarial |
+
+
+
+
+### Agentes y su rol
 
 | Característica | `sniffer_remote_pcap` | `sniffer_span_forwarder` | `sniffer_span_pcap` |
 | :--- | :--- | :--- | :--- |
