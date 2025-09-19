@@ -4,8 +4,6 @@ El código presentado es a modo educativo para entender en forma simple como fun
 
 ## Comparativa de aplicaciones presente en el mercado para monitoreo de redes industriales
 
-# Comparativa Unificada – Análisis de PCAP y Seguridad OT
-
 | Herramienta | Tipo / Enfoque | ¿PCAP offline? | Protocolos ICS | Topología / Inventario | Detección de amenazas | Gestión de vulnerabilidades | Integraciones | Curva de uso | Nivel de Madurez | Mejores casos |
 |-------------|----------------|----------------|----------------|------------------------|-----------------------|-----------------------------|---------------|--------------|------------------|---------------|
 | **Wireshark / Tshark** | Analizador de paquetes (manual/CLI) | ✅ | Alto (Modbus, S7Comm, DNP3, BACnet, IEC-104, etc.) | Parcial (endpoints/conversations) | ❌ | ❌ | Export CSV/PCAP | Baja | **Básico** | Triage inicial, análisis puntual de tramas |
@@ -26,7 +24,7 @@ El código presentado es a modo educativo para entender en forma simple como fun
 
 
 
-### Agentes y su rol
+### Código de agentes secureot y su rol
 
 | Característica | `sniffer_remote_pcap` | `sniffer_span_forwarder` | `sniffer_span_pcap` |
 | :--- | :--- | :--- | :--- |
