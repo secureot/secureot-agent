@@ -58,6 +58,44 @@ Este agente permite capturar tráfico en crudo desde una interfaz de red (por ej
 ### 📡 Sniffer remoto con recepción por puerto TCP/UDP
 El agente también puede actuar como receptor activo de tráfico, escuchando conexiones entrantes a través de un puerto configurable. Esta modalidad permite recibir datos desde nodos remotos o arquitecturas de reenvío, integrándose como colector central en despliegues distribuido. Además, implementa un sistema de rotación horaria de archivos PCAP y definición por IP de origen, permitiendo segmentar el tráfico recibido en archivos independientes para cada fuente. Compatible con LINKTYPE_RAW, puede registrar payloads sin encabezados Ethernet, facilitando integraciones en entornos OT que requieren flexibilidad y separación lógica del tráfico.
 
+## Diagrama de operación
+
+```mermaid
+flowchart TD
+    subgraph OT_Network ["Red Operativa (OT/ICS)"]
+        PLC[PLC / RTU]
+        HMI[HMI Scada]
+        Switch{Switch SPAN Port}
+        
+        PLC <--> Switch
+        HMI <--> Switch
+    end
+
+    subgraph Edge_Compute ["Sonda de Captura (Edge)"]
+        NicIn((Interfaz Promiscua))
+        Agent["SecureOT Forwarder (sniffer_span_forwarder)"]
+        LocalStore[("/var/lib/secureot/pcaps\n(Backup Local)")]
+        
+        Switch -- "Tráfico Espejado (Raw)" --> NicIn
+        NicIn --> Agent
+        Agent --> |"Escritura Rotativa"| LocalStore
+    end
+
+    subgraph Corporate_Cloud ["Centro de Operaciones (SOC/Cloud)"]
+        Collector["SecureOT Collector\n(sniffer_remote_pcap)"]
+        CentralStore[("/data/central_pcaps")]
+        SIEM["Análisis / SIEM (Wireshark/Zeek)"]
+
+        Agent -.-> |"Túnel TCP/UDP\n(Reenvío)"| Collector
+        Collector --> |"Clasificación por IP Origen"| CentralStore
+        CentralStore --> SIEM
+    end
+
+    style Agent fill:#f96,stroke:#333,stroke-width:2px
+    style Collector fill:#69f,stroke:#333,stroke-width:2px
+    style Switch fill:#fff,stroke:#333,stroke-dasharray: 5 5
+```
+
 # Debug en tiempo real del SecureOT Agent
 
 Este documento describe cómo depurar y observar el funcionamiento del agente en tiempo real
