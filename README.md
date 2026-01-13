@@ -96,6 +96,63 @@ flowchart TD
     style Switch fill:#fff,stroke:#333,stroke-dasharray: 5 5
 ```
 
+## Instalación como servicio
+
+Se recomienda estandarizar las rutas para logs y configuraciones.
+
+```bash
+sudo mkdir -p /etc/secureot /var/lib/secureot-agent/pcaps
+sudo chmod 755 /var/lib/secureot-agent/
+```
+
+Copia el binario compilado y el archivo de configuración:
+
+```
+sudo cp target/release/sniffer_span_forwarder /usr/local/bin/
+sudo cp sniffer_span_forwarder/config.yaml /etc/secureot/forwarder.yaml
+```
+
+Creación del Servicio (Systemd)
+
+/etc/systemd/system/secureot-forwarder.service:
+
+```toml
+[Unit]
+Description=SecureOT Span Forwarder Agent
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Ejecutar como root es necesario para abrir la interfaz en modo promiscuo
+User=root
+ExecStart=/usr/local/bin/sniffer_span_forwarder /etc/secureot/forwarder.yaml
+Restart=always
+RestartSec=5s
+# Límites para evitar que el buffer de escritura bloquee el sistema
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Optimización de Interfaz (NIC)
+
+Para evitar la pérdida de paquetes en tráfico de alta velocidad (Gigabit+), se debe desactivar el offloading en la interfaz de captura:
+
+Añadir esto a un script de inicio o netplan
+```
+sudo ethtool -K eth0 gro off gso off tso off lro off
+```
+
+Activación
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable --now secureot-forwarder
+sudo systemctl status secureot-forwarder
+```
+
 # Debug en tiempo real del SecureOT Agent
 
 Este documento describe cómo depurar y observar el funcionamiento del agente en tiempo real
