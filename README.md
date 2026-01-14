@@ -136,7 +136,26 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 ```
 
-Optimización de Interfaz (NIC)
+Optimización de Interfaz (NIC) y del sistema
+
+Aumentar el Buffer del Kernel:
+
+```bash
+# Aumentar buffer de recepción a 100MB (ajustar según RAM)
+sudo sysctl -w net.core.rmem_max=104857600
+sudo sysctl -w net.core.rmem_default=104857600
+```
+
+Aumentar el Ring Buffer de la NIC:
+
+Ver maximo soportado
+```
+ethtool -g eth0
+```
+Configurar al máximo (ej. 4096)
+```
+sudo ethtool -G eth0 rx 4096
+```
 
 Para evitar la pérdida de paquetes en tráfico de alta velocidad (Gigabit+), se debe desactivar el offloading en la interfaz de captura:
 
