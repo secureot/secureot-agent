@@ -2,7 +2,7 @@
 
 El código presentado es a modo educativo para entender en forma simple como funciona una aplicación de monitoreo pasivo del tráfico de red. A diferencia de un monitoreo activo o intrusivo, esta herramienta recibe una copia del tráfico sin interferir en los procesos.
 
-Además, se fomenta la auditoría interna del proceso mediante técnicas de debugging en Linux (usando strace, lsof o bpftrace). Esto permite observar 'bajo el capó' cómo el agente interactúa con el Kernel para abrir sockets crudos, gestionar descriptores de archivo y solicitar recursos de memoria, validando de forma práctica la teoría de operación transparente y no intrusiva."
+Además, se fomenta la auditoría interna del proceso mediante técnicas de debugging en Linux (usando strace, lsof o bpftrace). Esto permite observar 'bajo el capó' cómo el agente interactúa con el Kernel para abrir sockets crudos, gestionar descriptores de archivo y solicitar recursos de memoria, validando de forma práctica la teoría de operación transparente y no intrusiva.
 
 ## Comparativa de aplicaciones presente en el mercado para monitoreo de redes industriales
 
