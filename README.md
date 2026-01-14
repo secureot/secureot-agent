@@ -74,7 +74,7 @@ flowchart TD
     subgraph Edge_Compute ["Sonda de Captura (Edge)"]
         NicIn((Interfaz Promiscua))
         Agent["SecureOT Forwarder (sniffer_span_forwarder)"]
-        LocalStore[("/var/lib/secureot/pcaps\n(Backup Local)")]
+        LocalStore[("/var/lib/secureot/pcaps (Backup Local)")]
         
         Switch -- "Tráfico Espejado (Raw)" --> NicIn
         NicIn --> Agent
@@ -82,11 +82,11 @@ flowchart TD
     end
 
     subgraph Corporate_Cloud ["Centro de Operaciones (SOC/Cloud)"]
-        Collector["SecureOT Collector\n(sniffer_remote_pcap)"]
+        Collector["SecureOT Collector (sniffer_remote_pcap)"]
         CentralStore[("/data/central_pcaps")]
         SIEM["Análisis / SIEM (Wireshark/Zeek)"]
 
-        Agent -.-> |"Túnel TCP/UDP\n(Reenvío)"| Collector
+        Agent -.-> |"Túnel TCP/UDP (Reenvío)"| Collector
         Collector --> |"Clasificación por IP Origen"| CentralStore
         CentralStore --> SIEM
     end
